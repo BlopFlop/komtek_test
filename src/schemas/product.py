@@ -17,7 +17,7 @@ class ProductSchemaBase(BaseModel):
             " допустимая длина строки — от 1 до 250 символов включительно;"
         )
     )
-    artikul: PositiveInt = Field(
+    article: PositiveInt = Field(
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
@@ -42,39 +42,40 @@ class ProductSchemaBase(BaseModel):
     )
 
     class Config:
-        schema_extra = {
-            'example': {
-                'name': "Бомбочки для ванны набор",
-                'artikul': 122551613,
-                'price': 387.00,
-                'rating': 'Среднее образование',
+        json_schema_extra = {
+            "example": {
+                "id": 1,
+                "name": "Бомбочки для ванны набор",
+                "article": 122551613,
+                "price": 387.00,
+                "rating": 4.7,
                 "total": 10560
             }
         }
 
     @field_validator("rating")
-    def rating_validator(cls, value: int):
+    def rating_validator(cls: "ProductSchemaBase", value: int) -> int:
         if value < 0 and value > 5:
             except_message = (
                 f"Значение {value} должно быть в "
                 "диапазоне от 0 до 5-ти включительно."
             )
             return ValueError(except_message)
+        return value
 
     def __repr__(self) -> str:
-        return f"Товар: Артикул {self.articul} Количество {self.total}"
+        return f"Товар: Артикул {self.article} Количество {self.total}"
 
 
 class ProductSchemaCreate(ProductSchemaBase):
     """Schema for create product."""
-
-    pass
 
 
 class ProductSchemaUpadate(ProductSchemaBase):
     """Schema for update product."""
 
     name: Optional[str] = Field(
+        None,
         min_length=1,
         max_length=250,
         title="Name product.",
@@ -83,19 +84,22 @@ class ProductSchemaUpadate(ProductSchemaBase):
             " допустимая длина строки — от 1 до 250 символов включительно;"
         )
     )
-    artikul: Optional[PositiveInt] = Field(
+    article: Optional[PositiveInt] = Field(
+        None,
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
         )
     )
     price: Optional[PositiveFloat] = Field(
+        None,
         title="Price product.",
         description=(
             "Цена товара, рубли, положительное число с плавающей запятой."
         )
     )
     rating: Optional[float] = Field(
+        None,
         title="Rating product from store.",
         description=(
             "Рейтинг товара на основе отзывов, число с "
@@ -103,6 +107,7 @@ class ProductSchemaUpadate(ProductSchemaBase):
         )
     )
     total: Optional[int] = Field(
+        None,
         title="Total product from warehouse.",
         description="Количесво товара на всех складах."
     )
@@ -120,13 +125,13 @@ class ProductSchemaDB(ProductSchemaBase):
     )
 
     class Config:
-        orm_mode: bool = True
+        from_attributes: bool = True
 
 
 class ProductSchemaGetFromStore(BaseModel):
     """Schema for get product from store."""
 
-    artikul: PositiveInt = Field(
+    article: PositiveInt = Field(
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
@@ -134,8 +139,8 @@ class ProductSchemaGetFromStore(BaseModel):
     )
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             'example': {
-                'artikul': 122551613,
+                'article': 122551613,
             }
         }

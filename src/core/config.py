@@ -1,35 +1,30 @@
 import logging
+from pathlib import Path
 from logging.handlers import RotatingFileHandler
-from typing import Optional
 
 from pydantic import EmailStr, Field
 from pydantic_settings import BaseSettings
 
-from core.constants import (
-    ENV_PATH,
-    LOG_DIR,
-    LOG_FILE,
-    LOG_FORMAT,
-)
+from core.constants import ENV_PATH
 
 
 class Settings(BaseSettings):
     """Settings for current project."""
 
-    # application
+    #  application
     name_app: str = Field(alias="NAME_APP")
     secret: str = Field(alias="SECRET")
-    first_superuser_email: Optional[EmailStr] = Field(
+    first_superuser_email: EmailStr = Field(
         alias="FIRST_SUPERUSER_EMAIL"
     )
-    first_superuser_password: Optional[str] = Field(
+    first_superuser_password: str = Field(
         alias="FIRST_SUPERUSER_PASSWORD"
     )
 
-    # telegram
+    #  telegram
     tg_token: str = Field(alias="TG_TOKEN")
 
-    # database
+    #  database
     postgres_db: str = Field(alias="POSTGRES_DB")
     postgres_user: str = Field(alias="POSTGRES_USER")
     postgres_password: str = Field(alias="POSTGRES_PASSWORD")
@@ -47,7 +42,7 @@ class Settings(BaseSettings):
             self.postgres_db,
         )
 
-    # wildberries
+    #  wildberries
     key_store: str = Field(alias="KEY_STORE")
 
     class Config:
@@ -57,14 +52,14 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 
-def configure_logging() -> None:
-    """Configure logging from this project."""
-    LOG_DIR.mkdir(exist_ok=True)
+def configure_logging(log_dir: Path, log_file: Path, log_format: str) -> None:
+    """Setttings logging from this project."""
+    log_dir.mkdir(exist_ok=True)
     rotating_handler: RotatingFileHandler = RotatingFileHandler(
-        LOG_FILE, maxBytes=10**6, backupCount=5
+        log_file, maxBytes=10**6, backupCount=5
     )
-    rotating_handler.setFormatter(LOG_FORMAT)
-    project_logger = logging.getLogger("bim_web_app_logging")
+    rotating_handler.setFormatter(log_format)
+    project_logger = logging.getLogger(log_file.stem)
     project_logger.setLevel(logging.INFO)
     project_logger.addHandler(rotating_handler)
     project_logger.addHandler(logging.StreamHandler())

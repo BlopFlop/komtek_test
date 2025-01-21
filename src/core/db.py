@@ -1,3 +1,5 @@
+from typing import AsyncGenerator, Any
+
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -19,8 +21,9 @@ class PreBase:
     """Base model."""
 
     @declared_attr
-    def __tablename__(cls):
+    def __tablename__(cls) -> str:
         """Autocreate tablename."""
+        cls.__name__: str
         return cls.__name__.lower()
 
     id: Mapped[int] = mapped_column(
@@ -33,16 +36,19 @@ class PreBase:
 
 Base: DeclarativeMeta = declarative_base(cls=PreBase)
 
-engine: AsyncEngine = create_async_engine(settings.database_url)
+engine: AsyncEngine = create_async_engine(
+    settings.database_url,
+    pool_pre_ping=True
+)
 
-AsyncSessionLocal: sessionmaker = sessionmaker(
+AsyncSessionLocal: AsyncSession = sessionmaker(
     engine,
     class_=AsyncSession,
     expire_on_commit=False,
 )
 
 
-async def get_async_session():
+async def get_async_session() -> AsyncGenerator[AsyncSession, Any]:
     """Async sessionmaker."""
     async with AsyncSessionLocal() as async_session:
         yield async_session

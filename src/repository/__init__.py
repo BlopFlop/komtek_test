@@ -1,3 +1,5 @@
+"""Repositories package."""
+
 from repository.product import get_product_repository
 from repository.base import RepositoryBase
 

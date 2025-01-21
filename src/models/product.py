@@ -19,7 +19,7 @@ class Product(Base):
             " допустимая длина строки — от 1 до 250 символов включительно;"
         )
     )
-    artikul: Mapped[int] = mapped_column(
+    article: Mapped[int] = mapped_column(
         BigInteger,
         unique=True,
         nullable=False,
@@ -49,4 +49,4 @@ class Product(Base):
     )
 
     def __repr__(self) -> str:
-        return f"Product: Articul {self.artikul} Total {self.total}"
+        return f"Product: Articul {self.article} Total {self.total}"
