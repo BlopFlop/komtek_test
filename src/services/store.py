@@ -38,24 +38,40 @@ def _get_field_from_api(data: dict[str, Any]):
     }
 
     if STORE_KEY_DATA not in data:
-        raise HTTPException(500)
+        except_message = (
+            "API магазина отдает неккоректные данные. "
+            "Возможности получить товар по артикулу нет"
+        )
+        raise HTTPException(500, detail=except_message)
 
     data = data.get(STORE_KEY_DATA)
 
     if STORE_KEY_PRODUCT not in data:
-        raise HTTPException(500)
+        except_message = (
+            "API магазина отдает неккоректные данные. "
+            "Возможности получить товар по артикулу нет"
+        )
+        raise HTTPException(500, detail=except_message)
 
     data = data.get(STORE_KEY_PRODUCT)
 
     if not data:
-        raise HTTPException(500)
+        except_message = (
+            "Вы передали несуществующий артикль в магазине."
+        )
+        raise HTTPException(400, detail=except_message)
 
     data = data[0]
 
     product_values = {}
     for key, field in fields.items():
         if key not in data:
-            raise HTTPException(500)
+            except_message = (
+                f"API магазина отдает неккоректные данные. Поля {key}"
+                "Больше не существует. Возможности получить товар по "
+                "артикулу нет"
+            )
+            raise HTTPException(500, detail=except_message)
 
         value = data.get(key)
 
@@ -70,7 +86,10 @@ async def get_data_from_store(url: str) -> dict[str, Any]:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             if response.status != 200:
-                raise HTTPException(400)
+                except_message = (
+                    "Сервис магазина недоступен, данные не доступны."
+                )
+                raise HTTPException(500, detail=except_message)
             data: dict[str, Any] = await response.json()
     return _get_field_from_api(data)
 

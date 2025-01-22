@@ -3,13 +3,14 @@ from fastapi import APIRouter, Depends
 from schemas import ProductSchemaDB, ProductSchemaGetFromStore
 from repository import get_product_repository, ProductRepository
 from services import create_or_update_product_from_store
+from core.user import current_user
 
 router = APIRouter()
 
 
 @router.post(
     "/",
-    # dependencies=[Depends(current_user)],
+    dependencies=[Depends(current_user)],
     summary="Загрузка товара в базу данных.",
     description=(
         "Получает товар из магазина по артикулу, и загружает его в базу данных"

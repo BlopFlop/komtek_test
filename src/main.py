@@ -51,4 +51,4 @@ if __name__ == "__main__":
         log_file=LOG_FILE,
         log_format=LOG_FORMAT
     )
-    uvicorn.run(app, host="0.0.0.0", port=2000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

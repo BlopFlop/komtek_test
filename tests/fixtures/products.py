@@ -46,7 +46,7 @@ valid_article_4 = {"article": 151060332}
 valid_article_5 = {"article": 93075175}
 
 invalid_article_1 = {"article": 999999999}
-invalid_article_2 = {"article": "bdkjafdfa"}
+invalid_article_2 = {"article": 109999999}
 invalid_article_3 = {"article": 123124.5453}
 invalid_article_4 = {"article": -500}
 invalid_article_5 = {"article": "%#$@!!$#%%^"}

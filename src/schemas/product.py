@@ -44,7 +44,6 @@ class ProductSchemaBase(BaseModel):
         None,
         title="Perform update and over time.",
         description="Обновлять ли товар при запуске, или по времени.",
-        exclude=True
     )
 
     class Config:
@@ -128,6 +127,12 @@ class ProductSchemaDB(ProductSchemaBase):
     id: int = Field(
         title="Id product in db",
         description="Id товара в базе данных"
+    )
+    perform_update: Optional[bool] = Field(
+        None,
+        title="Perform update and over time.",
+        description="Обновлять ли товар при запуске, или по времени.",
+        exclude=True,
     )
 
     class Config:

@@ -46,7 +46,7 @@ class RepositoryBase:
         obj_in: SchemaCreate,
     ) -> SchemaDB:
         """Create item model for id."""
-        obj_in_data = obj_in.dict()
+        obj_in_data = obj_in.model_dump()
         db_obj = self.model(**obj_in_data)
         self.session.add(db_obj)
         await self.session.commit()
