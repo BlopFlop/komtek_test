@@ -5,7 +5,7 @@ from logging.handlers import RotatingFileHandler
 from pydantic import EmailStr, Field
 from pydantic_settings import BaseSettings
 
-from core.constants import ENV_PATH
+from core.constants import ENV_PATH, STORE_URL_GET_PRODUCT
 
 
 class Settings(BaseSettings):
@@ -52,6 +52,31 @@ class Settings(BaseSettings):
         extra = "ignore"
 
 
+class TestDatabaseSettings(BaseSettings):
+    postgres_db: str = Field(alias="TEST_POSTGRES_DB")
+    postgres_user: str = Field(alias="TEST_POSTGRES_USER")
+    postgres_password: str = Field(alias="TEST_POSTGRES_PASSWORD")
+    db_host: str = Field(alias="TEST_POSTGRES_SERVER")
+    db_port: str = Field(alias="TEST_POSTGRES_PORT")
+
+    @property
+    def database_url(self) -> str:
+        """Return database url from .env ."""
+        return "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
+            self.postgres_user,
+            self.postgres_password,
+            self.db_host,
+            self.db_port,
+            self.postgres_db,
+        )
+
+    class Config:
+        """Config for the meta class in current settings."""
+
+        env_file = ENV_PATH
+        extra = "ignore"
+
+
 def configure_logging(log_dir: Path, log_file: Path, log_format: str) -> None:
     """Setttings logging from this project."""
     log_dir.mkdir(exist_ok=True)
@@ -66,3 +91,4 @@ def configure_logging(log_dir: Path, log_file: Path, log_format: str) -> None:
 
 
 settings = Settings()
+test_database_settings = TestDatabaseSettings()

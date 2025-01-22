@@ -40,6 +40,12 @@ class ProductSchemaBase(BaseModel):
         title="Total product from warehouse.",
         description="Количесво товара на всех складах."
     )
+    perform_update: Optional[bool] = Field(
+        None,
+        title="Perform update and over time.",
+        description="Обновлять ли товар при запуске, или по времени.",
+        exclude=True
+    )
 
     class Config:
         json_schema_extra = {
@@ -71,7 +77,7 @@ class ProductSchemaCreate(ProductSchemaBase):
     """Schema for create product."""
 
 
-class ProductSchemaUpadate(ProductSchemaBase):
+class ProductSchemaUpdate(ProductSchemaBase):
     """Schema for update product."""
 
     name: Optional[str] = Field(

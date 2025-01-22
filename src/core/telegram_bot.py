@@ -24,10 +24,9 @@ shutdown_event = asyncio.Event()
 
 async def start_bot() -> None:
     await bot.delete_webhook()
-    dp.bot = bot
     await dp.start_polling(bot)
 
 
 async def shutdown_bot():
     await shutdown_event.wait()
-    dp.bot.session.close()
+    await bot.session.close()

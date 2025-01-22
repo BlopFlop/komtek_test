@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    String, Float, BigInteger, CheckConstraint
+    String, Float, BigInteger, Boolean, CheckConstraint
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -46,6 +46,12 @@ class Product(Base):
         unique=False,
         nullable=False,
         comment="Количесво товара на всех складах."
+    )
+    perform_update: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=True,
+        comment="Обновлять ли товар при запуске, или по времени."
     )
 
     def __repr__(self) -> str:
