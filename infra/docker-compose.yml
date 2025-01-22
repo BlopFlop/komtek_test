@@ -1,0 +1,29 @@
+name: test_task
+services:
+  db:
+    env_file:
+      - path: .env
+        required: true
+    image: postgres:15-bookworm
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./logs/db/:/var/log/postgres
+    ports:
+      - "5434:5434"
+    command: -p 5434
+
+  bot:
+    build: ../src
+    tty: true
+    env_file: .env
+    restart: always
+    depends_on:
+      - db
+
+networks:
+  default:
+    name: test_task_network
+
+volumes:
+  db_data:
