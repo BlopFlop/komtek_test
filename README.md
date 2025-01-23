@@ -44,7 +44,7 @@ bim_projects_app
 │   │   │   └── __init__.py
 │   │   ├── routers.py     # Роутеры для АПИ
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───core/
 │   │   ├── base.py     # Импорт моделей бд для импорта в env.py Alembic
 │   │   ├── config.py      # Настройки проекта
@@ -55,38 +55,38 @@ bim_projects_app
 │   │   ├── telegram_bot.py      # Настройка тг приложения
 │   │   ├── user.py      # Настройка пользователя
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───handlers/
 │   │   ├── info.py     # Тг хэндлер для получения инфы о боте
 │   │   ├── product.py      # Тг хэндлер для получения инфы о продукте по артикулу
 │   │   ├── start.py      # Тг хэндлер для инициализации бота
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───logs
-│   │   
+│   │
 │   ├───models/
 │   │   ├── product.py     # Модель продукта
 │   │   ├── user.py      # Модель пользователя
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───repository/
 │   │   ├── base.py     # Базовый репозиторий
 │   │   ├── product.py      # Репозиторий продукта
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───schemas/
 │   │   ├── product.py     # Схема продукта
 │   │   ├── user.py      # Схема пользователя
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───services/
 │   │   ├── store.py      # Бизнес логика получения продукта через АПИ магазина
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├───text/
 │   │   ├── messages.py      # ТГ сообщения
 │   │   └── __init__.py
-│   │   
+│   │
 │   ├── alembic.ini     # Скрипт миграций
 │   ├── alembic_test.ini     # Скрипт миграций для тестовой бд
 │   ├── Dockerfile      # Докерфайл приложения
@@ -98,14 +98,14 @@ bim_projects_app
 │   ├── .pre-commit-config.yaml     # Настройки для проверок перед комитом
 │   ├── style.cfg       # Настройки для isort и flake8
 │   └── black.cfg       # Настройки для black
-│   
+│
 ├── tests/      # Тестирование
 |   │   conftest.py     # Тестовые компоненты
 │   │   test_api_auth.py     # Тестирование апи аунтефикации
 │   │   test_api_product.py     # Тестирование апи продукта
 │   │   test_api_subscribe.py       # Тестирование апи задачи каждые 30 минут
 │   │   test_services.py        # Тестирование логики
-│   │   
+│   │
 │   └───fixtures/      # Фикстуры
 │           products.py       # Продукты
 │           user.py       # Пользователи
@@ -159,6 +159,7 @@ black...............................Passed
 ```
 #Запуск проекта
 Пример .env
+```
 #  application
 NAME_APP="Test application"
 SECRET="TestSecretKey"  # Заменить
@@ -184,7 +185,7 @@ TEST_POSTGRES_PORT="5432"
 
 #  wildberries
 KEY_STORE="testKey"  # Заменить
-
+```
 Применить миграции
 ```
 alembic upgrade head
