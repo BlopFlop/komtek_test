@@ -3,9 +3,9 @@ import contextlib
 from fastapi_users.exceptions import UserAlreadyExists
 from pydantic import EmailStr
 
-from core.user import get_user_db, get_user_manager
 from core.config import settings
 from core.db import get_async_session
+from core.user import get_user_db, get_user_manager
 from schemas.user import UserCreate
 
 get_async_session_context = contextlib.asynccontextmanager(get_async_session)
@@ -14,9 +14,7 @@ get_user_manager_context = contextlib.asynccontextmanager(get_user_manager)
 
 
 async def create_user(
-    email: EmailStr,
-    password: str,
-    is_superuser: bool = False
+    email: EmailStr, password: str, is_superuser: bool = False
 ) -> None:
     """Create user."""
     try:

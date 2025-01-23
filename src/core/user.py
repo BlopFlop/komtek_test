@@ -1,6 +1,5 @@
-
-from typing import Optional, Union, AsyncGenerator, Any
 import logging
+from typing import Any, AsyncGenerator, Optional, Union
 
 from fastapi import Depends, Request
 from fastapi_users import (
@@ -27,7 +26,7 @@ from schemas.user import UserCreate
 
 
 async def get_user_db(
-    session: AsyncSession = Depends(get_async_session)
+    session: AsyncSession = Depends(get_async_session),
 ) -> AsyncGenerator[SQLAlchemyUserDatabase[User, Any], None]:
     """Async generarot user in db."""
     yield SQLAlchemyUserDatabase(session, User)
@@ -78,7 +77,7 @@ password_helper = PasswordHelper(password_hash)
 
 
 async def get_user_manager(
-    user_db=Depends(get_user_db)
+    user_db=Depends(get_user_db),
 ) -> AsyncGenerator[UserManager, Any]:
     """Get user manager."""
     yield UserManager(user_db, password_helper)

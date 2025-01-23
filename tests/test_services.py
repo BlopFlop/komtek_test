@@ -1,5 +1,3 @@
-import asyncio # noqa
-
 import pytest
 
 from fastapi.exceptions import HTTPException

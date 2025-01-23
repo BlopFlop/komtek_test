@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Any
+from typing import Any, AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -37,8 +37,7 @@ class PreBase:
 Base: DeclarativeMeta = declarative_base(cls=PreBase)
 
 engine: AsyncEngine = create_async_engine(
-    settings.database_url,
-    pool_pre_ping=True
+    settings.database_url, pool_pre_ping=True
 )
 
 AsyncSessionLocal: AsyncSession = sessionmaker(

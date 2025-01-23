@@ -5,10 +5,11 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 
 from api import router as api_v1_router
-from core.config import configure_logging, settings
-from core.init_db import create_first_superuser
+from core.config import settings
 from core.constants import LOG_DIR, LOG_FILE, LOG_FORMAT, SECONDS_IN_MINUTE
-from core.telegram_bot import start_bot, shutdown_event, shutdown_bot
+from core.init_db import create_first_superuser
+from core.logging_ import configure_logging
+from core.telegram_bot import shutdown_bot, shutdown_event, start_bot
 from services.store import perform_update_products_from_store
 
 
@@ -18,11 +19,12 @@ async def startup() -> None:
 
 
 def job() -> None:
+    """Work update products after 30 minutes."""
     scheduler = AsyncIOScheduler()
     scheduler.add_job(
         perform_update_products_from_store,
         "interval",
-        seconds=(SECONDS_IN_MINUTE * 30)
+        seconds=(SECONDS_IN_MINUTE * 30),
     )
     scheduler.start()
 
@@ -47,8 +49,6 @@ app.include_router(api_v1_router, prefix="/api/v1")
 
 if __name__ == "__main__":
     configure_logging(
-        log_dir=LOG_DIR,
-        log_file=LOG_FILE,
-        log_format=LOG_FORMAT
+        log_dir=LOG_DIR, log_file=LOG_FILE, log_format=LOG_FORMAT
     )
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=2000)

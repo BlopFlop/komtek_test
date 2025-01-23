@@ -4,13 +4,9 @@ from schemas.product import (
     ProductSchemaGetFromStore,
     ProductSchemaCreate,
     ProductSchemaDB,
-    ProductSchemaUpdate
+    ProductSchemaUpdate,
 )
-from schemas.user import (
-    UserCreate,
-    UserRead,
-    UserUpdate
-)
+from schemas.user import UserCreate, UserRead, UserUpdate
 
 __all__ = [
     "ProductSchemaGetFromStore",
@@ -19,5 +15,5 @@ __all__ = [
     "ProductSchemaUpdate",
     "UserUpdate",
     "UserCreate",
-    "UserRead"
+    "UserRead",
 ]

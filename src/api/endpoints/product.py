@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from schemas import ProductSchemaDB, ProductSchemaGetFromStore
-from repository import get_product_repository, ProductRepository
-from services import create_or_update_product_from_store
 from core.user import current_user
+from repository import ProductRepository, get_product_repository
+from schemas import ProductSchemaDB, ProductSchemaGetFromStore
+from services import create_or_update_product_from_store
 
 router = APIRouter()
 
@@ -19,9 +19,8 @@ router = APIRouter()
 )
 async def load_product_to_db(
     get_schema_product: ProductSchemaGetFromStore,
-    repository_product: ProductRepository = Depends(get_product_repository)
+    repository_product: ProductRepository = Depends(get_product_repository),
 ) -> ProductSchemaDB:
     return await create_or_update_product_from_store(
-        article=get_schema_product.article,
-        repository=repository_product
+        article=get_schema_product.article, repository=repository_product
     )

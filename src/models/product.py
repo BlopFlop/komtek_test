@@ -1,6 +1,4 @@
-from sqlalchemy import (
-    String, Float, BigInteger, Boolean, CheckConstraint
-)
+from sqlalchemy import BigInteger, Boolean, CheckConstraint, Float, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.db import Base
@@ -17,20 +15,20 @@ class Product(Base):
         comment=(
             "Уникальное название товара, обязательное строковое поле;"
             " допустимая длина строки — от 1 до 250 символов включительно;"
-        )
+        ),
     )
     article: Mapped[int] = mapped_column(
         BigInteger,
         unique=True,
         nullable=False,
-        comment="Артикул товара в магазине, целочисленное уникальное значение."
+        comment="Артикул товара в магазине, целочисленное уникальное значение.",
     )
     price: Mapped[float] = mapped_column(
         Float,
         CheckConstraint("price > 0", name="check_price_positive"),
         unique=False,
         nullable=False,
-        comment="Цена товара, положительное число с плавающей запятой."
+        comment="Цена товара, положительное число с плавающей запятой.",
     )
     rating: Mapped[Float] = mapped_column(
         Float,
@@ -39,19 +37,19 @@ class Product(Base):
         nullable=False,
         comment=(
             "Рейтинг товара, число с плавающей запятой от 0 до 5 включительно."
-        )
+        ),
     )
     total: Mapped[int] = mapped_column(
         BigInteger,
         unique=False,
         nullable=False,
-        comment="Количесво товара на всех складах."
+        comment="Количесво товара на всех складах.",
     )
     perform_update: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
         nullable=True,
-        comment="Обновлять ли товар при запуске, или по времени."
+        comment="Обновлять ли товар при запуске, или по времени.",
     )
 
     def __repr__(self) -> str:

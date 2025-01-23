@@ -1,7 +1,11 @@
 from typing import Optional
 
 from pydantic import (
-    BaseModel, Field, PositiveFloat, PositiveInt, field_validator
+    BaseModel,
+    Field,
+    PositiveFloat,
+    PositiveInt,
+    field_validator,
 )
 
 
@@ -15,30 +19,30 @@ class ProductSchemaBase(BaseModel):
         description=(
             "Уникальное название товара, обязательное строковое поле;"
             " допустимая длина строки — от 1 до 250 символов включительно;"
-        )
+        ),
     )
     article: PositiveInt = Field(
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
-        )
+        ),
     )
     price: PositiveFloat = Field(
         title="Price product.",
         description=(
             "Цена товара, рубли, положительное число с плавающей запятой."
-        )
+        ),
     )
     rating: float = Field(
         title="Rating product from store.",
         description=(
             "Рейтинг товара на основе отзывов, число с "
             "плавающей запятой от 0 до 5 включительно."
-        )
+        ),
     )
     total: int = Field(
         title="Total product from warehouse.",
-        description="Количесво товара на всех складах."
+        description="Количесво товара на всех складах.",
     )
     perform_update: Optional[bool] = Field(
         None,
@@ -54,7 +58,7 @@ class ProductSchemaBase(BaseModel):
                 "article": 122551613,
                 "price": 387.00,
                 "rating": 4.7,
-                "total": 10560
+                "total": 10560,
             }
         }
 
@@ -87,21 +91,21 @@ class ProductSchemaUpdate(ProductSchemaBase):
         description=(
             "Уникальное название товара, обязательное строковое поле;"
             " допустимая длина строки — от 1 до 250 символов включительно;"
-        )
+        ),
     )
     article: Optional[PositiveInt] = Field(
         None,
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
-        )
+        ),
     )
     price: Optional[PositiveFloat] = Field(
         None,
         title="Price product.",
         description=(
             "Цена товара, рубли, положительное число с плавающей запятой."
-        )
+        ),
     )
     rating: Optional[float] = Field(
         None,
@@ -109,12 +113,12 @@ class ProductSchemaUpdate(ProductSchemaBase):
         description=(
             "Рейтинг товара на основе отзывов, число с "
             "плавающей запятой от 0 до 5 включительно."
-        )
+        ),
     )
     total: Optional[int] = Field(
         None,
         title="Total product from warehouse.",
-        description="Количесво товара на всех складах."
+        description="Количесво товара на всех складах.",
     )
 
     class Config:
@@ -125,8 +129,7 @@ class ProductSchemaDB(ProductSchemaBase):
     """Presentate schema for product in database."""
 
     id: int = Field(
-        title="Id product in db",
-        description="Id товара в базе данных"
+        title="Id product in db", description="Id товара в базе данных"
     )
     perform_update: Optional[bool] = Field(
         None,
@@ -146,12 +149,12 @@ class ProductSchemaGetFromStore(BaseModel):
         title="Articul product from store.",
         description=(
             "Артикул товара в магазине, целочисленное уникальное значение."
-        )
+        ),
     )
 
     class Config:
         json_schema_extra = {
-            'example': {
-                'article': 122551613,
+            "example": {
+                "article": 122551613,
             }
         }

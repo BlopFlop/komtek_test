@@ -1,13 +1,14 @@
-from typing import TypeAlias, Any
+from typing import Any, TypeAlias
 
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy import select
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import DeclarativeBase
 
 from core.db import get_async_session
+from core.logging_ import async_func_log_msg
 
 DatabaseModel: TypeAlias = DeclarativeBase
 SchemaCreate: TypeAlias = BaseModel
@@ -21,11 +22,15 @@ class RepositoryBase:
     def __init__(
         self,
         model: type[DatabaseModel],
-        session: AsyncSession = Depends(get_async_session)
+        session: AsyncSession = Depends(get_async_session),
     ) -> None:
         self.model = model
         self.session = session
 
+    @async_func_log_msg(
+        start_process_msg="Получение одного элемента из бд по id.",
+        end_process_msg="Элемент получен.",
+    )
     async def get(
         self,
         obj_id: int,
@@ -36,11 +41,19 @@ class RepositoryBase:
         )
         return db_obj.scalars().first()
 
+    @async_func_log_msg(
+        start_process_msg="Получение всех Элементов из бд.",
+        end_process_msg="Элементы получены.",
+    )
     async def get_multi(self) -> list[SchemaDB]:
         """Get all items model."""
         db_objs = await self.session.execute(select(self.model))
         return db_objs.scalars().all()
 
+    @async_func_log_msg(
+        start_process_msg="Создание элемента в бд.",
+        end_process_msg="Элемент создан.",
+    )
     async def create(
         self,
         obj_in: SchemaCreate,
@@ -53,6 +66,10 @@ class RepositoryBase:
         await self.session.refresh(db_obj)
         return db_obj
 
+    @async_func_log_msg(
+        start_process_msg="Обновление элемента в бд.",
+        end_process_msg="Элемент обновлен.",
+    )
     async def update(
         self,
         db_obj: SchemaDB,
@@ -71,6 +88,10 @@ class RepositoryBase:
         await self.session.refresh(db_obj)
         return db_obj
 
+    @async_func_log_msg(
+        start_process_msg="Удаление элемента в бд.",
+        end_process_msg="Элемент удален.",
+    )
     async def remove(
         self,
         db_obj: SchemaDB,
@@ -80,11 +101,15 @@ class RepositoryBase:
         await self.session.commit()
         return db_obj
 
+    @async_func_log_msg(
+        start_process_msg=(
+            "Получение элемента или списка Элементов"
+            " по имени поля и по значению."
+        ),
+        end_process_msg="Элемент получен.",
+    )
     async def get_obj_for_field_arg(
-        self,
-        field: str,
-        arg: Any,
-        many: bool
+        self, field: str, arg: Any, many: bool
     ) -> SchemaDB | list[SchemaDB]:
         """Get model for keyword argument."""
         db_obj = await self.session.execute(
