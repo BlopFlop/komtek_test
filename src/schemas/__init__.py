@@ -1,5 +1,6 @@
 """Pydantic schemas package."""
 
+from schemas.code_msg import Message
 from schemas.product import (
     ProductSchemaGetFromStore,
     ProductSchemaCreate,
@@ -16,4 +17,5 @@ __all__ = [
     "UserUpdate",
     "UserCreate",
     "UserRead",
+    "Message"
 ]
