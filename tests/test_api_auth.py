@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-REGISTER_URL = "/api/v1/auth/register"
+REGISTER_URL = "/auth/register"
 
 
 def test_register(test_client: TestClient):

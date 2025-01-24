@@ -21,6 +21,15 @@ services:
     depends_on:
       - db
 
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - bot
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8000:80"
+
 networks:
   default:
     name: test_task_network
